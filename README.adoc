@@ -1,0 +1,45 @@
+= pidfile-go
+:toc:
+
+https://pkg.go.dev/github.com/Xiami2012/pidfile-go[image:https://pkg.go.dev/badge/github.com/Xiami2012/pidfile-go.svg[Go Reference]]
+
+This is a go package to manage your instance/service's PID file.
+
+See https://unix.stackexchange.com/questions/12815/what-are-pid-and-lock-files-for for what a PID
+file is been used for.
+
+== Install
+
+`go get github.com/Xiami2012/pidfile-go@latest`
+
+== Basic usage
+
+[source,go]
+----
+func main() {
+	if err := pidfile.Write("/run/your_instance_name.pid"); err != nil {
+		if errors.Is(err, pidfile.ErrPIDFileInUse) {
+			fmt.Printf("Instance/Service is already running. Exiting.")
+			os.Exit(1)
+		}
+		panic(fmt.Sprintf("Failed to create PIDFile: %s\n", err.Error()))
+	}
+	defer pidfile.Remove("/run/your_instance_name.pid")
+}
+----
+
+== Why reinventing the wheel
+
+Once I have a daemon running in system without registering to any system service manager (run by
+some scripts during boot).
+
+To add a self-update feature, I need to know the old running PID and gracefully kill it before
+running the updated one.
+
+Searched and didn't find a package having something like GetPID() which does both reading the PID
+file and verifies it is running the desired process.
+
+== TODO
+
+* Allow to specify compared executable name instead of current process's
+* Add lock version APIs (By using flock / LockFile)
