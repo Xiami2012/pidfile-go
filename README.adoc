@@ -42,4 +42,5 @@ file and verifies it is running the desired process.
 == TODO
 
 * Allow to specify compared executable name instead of current process's
+* Allow to specify PID instead of current process's
 * Add lock version APIs (By using flock / LockFile)
