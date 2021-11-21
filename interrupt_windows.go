@@ -9,7 +9,7 @@ import (
 //
 // It supports both unix and windows.
 func SendInterrupt(pid int) error {
-	// Code from https://stackoverflow.com/questions/40498371/how-to-send-an-interrupt-signal
+	// Code from sendCtrlBreak @ os/signal/signal_windows_test.go
 	dll, err := syscall.LoadDLL("kernel32.dll")
 	if err != nil {
 		return fmt.Errorf("LoadDLL: %v", err)

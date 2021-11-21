@@ -2,6 +2,7 @@ package pidfile
 
 import (
 	"os"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,10 +39,11 @@ func TestOtherProcess(t *testing.T) {
 	assert.Nil(t, os.Remove(fp))
 	// Remove a non-existing file is ok
 	assert.Nil(t, Remove(fp))
-	assert.Nil(t, os.WriteFile(fp, []byte("1"), 0644))
+	ppid := os.Getppid()
+	assert.Nil(t, os.WriteFile(fp, []byte(strconv.Itoa(ppid)), 0644))
 	pid, err := GetRunningPID(fp)
 	assert.Nil(t, err)
-	assert.EqualValues(t, 1, pid)
+	assert.EqualValues(t, ppid, pid)
 	_, err = GetRunningPIDValid(fp)
 	assert.NotNil(t, err)
 }
@@ -63,8 +65,8 @@ func TestInvalidPIDFile(t *testing.T) {
 	assert.NotNil(t, PIDFile{}.Write())
 	assert.NotNil(t, WriteForce(""))
 	assert.NotNil(t, RemoveForce(""))
-	assert.NotNil(t, WriteForce("/notexists"))
-	assert.Nil(t, RemoveForce("/notexists"))
+	assert.NotNil(t, WriteForce("/notexists/notexists"))
+	assert.Nil(t, RemoveForce("/notexists/notexists"))
 	wd, err := os.Getwd()
 	assert.Nil(t, err)
 	_, err = PIDFile{wd}.GetRunningPIDValid()
