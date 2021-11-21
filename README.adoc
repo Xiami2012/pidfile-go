@@ -2,6 +2,7 @@
 :toc:
 
 https://pkg.go.dev/github.com/Xiami2012/pidfile-go[image:https://pkg.go.dev/badge/github.com/Xiami2012/pidfile-go.svg[Go Reference]]
+https://github.com/Xiami2012/pidfile-go/actions/workflows/golang-ci.yml[image:https://github.com/Xiami2012/pidfile-go/actions/workflows/golang-ci.yml/badge.svg[Golang-CI]]
 
 This is a go package to manage your instance/service's PID file.
 
